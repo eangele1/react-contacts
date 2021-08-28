@@ -1,61 +1,99 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-class RegisterForm extends React.Component {
+let formStyle = {
+    width: "75vw",
+    maxWidth: '600px',
+    margin: '0 auto',
+    position: 'fixed',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    zIndex: '999',
+    backgroundColor: '#FFF',
+    padding: '30px 40px',
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: "center",
+    boxShadow: "0 5px 10px -4px rgba(0, 0, 0, 0.7)",
+};
 
-    constructor(props) {
-        super(props);
+let buttonStyle = {
+    backgroundColor: "darkgray",
+    border: "none",
+    padding: "15px 32px",
+    textAlign: "center",
+    textDecoration: "none",
+    display: "inline-block",
+    fontSize: "16px",
+    margin: "4px 2px",
+    cursor: "pointer",
+    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)"
+};
 
-        this.state = {
-            username: '',
-            password: '',
+let inputStyle = {
+    width: "60%",
+    padding: "12px 12px",
+    margin: "8px 0px",
+    boxSizing: "border-box",
+    border: "none",
+    borderBottom: "1px solid black",
+    fontSize: "18px",
+    color: "black",
+    backgroundColor: "rgba(201, 76, 76, 0)"
+};
+
+const RegisterForm = () => {
+
+    const [username, setUserName] = useState("");
+    const [password, setPassWord] = useState("");
+
+    const handleInputChange = (e) => {
+        switch (e.target.name) {
+            case "username":
+                setUserName(e.target.value)
+                break;
+            case "password":
+                setPassWord(e.target.value);
+                break;
+            default:
+                break;
         }
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
-    handleInputChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
+    const handleFormSubmit = (e) => e.preventDefault();
 
-    handleFormSubmit(event) {
-        event.preventDefault();
-        
-    }
-
-    render() {
-        return (
-            <form onSubmit={this.handleFormSubmit}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input 
-                        id="username"
-                        name="username"
-                        type="text" 
-                        placeholder="Username"  
-                        value={this.state.username}
-                        onChange={this.handleInputChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input 
-                        id="password"
-                        name="password"
-                        type="password" 
-                        placeholder="Password"
-                        value={this.state.password}
-                        onChange={this.handleInputChange}
-                    />
-                </div>
-                <div>
-                    <button type="submit">Login</button>
-                </div>
-            </form>
-        )
-    }
+    return (
+        <form style={formStyle} onSubmit={(e) => handleFormSubmit(e)}>
+            <div>
+                <input
+                    style={inputStyle}
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => handleInputChange(e)}
+                />
+            </div>
+            <div>
+                <input
+                    style={inputStyle}
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => handleInputChange(e)}
+                />
+            </div>
+            <div>
+                <button style={buttonStyle} type="submit">REGISTER</button>
+            </div>
+            <div>
+                <p>Already have an account? <a href="/login">Login</a>.</p>
+            </div>
+        </form>
+    );
 }
 
 export default RegisterForm;

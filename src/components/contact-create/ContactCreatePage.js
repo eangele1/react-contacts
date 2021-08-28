@@ -1,8 +1,14 @@
 import ContactCreateForm from "./ContactCreateForm";
 
+let contentWrapper = {
+    width: "90vw",
+    maxWidth: "600px",
+    margin: "auto"
+};
+
 const ContactCreatePage = () => {
     return (
-        <div>
+        <div style={contentWrapper}>
             <ContactCreateForm />
         </div>
     )

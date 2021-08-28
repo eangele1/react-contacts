@@ -1,9 +1,9 @@
-import React from "react";
-//import LoginPage from "./login"
-//import RegisterPage from "./register";
+import React, { useState, useEffect } from "react";
+import LoginPage from "./login"
+import RegisterPage from "./register";
 import ContactsPage from "./contacts";
-//import ContactDetailsPage from "./contact-details";
-//import ContactCreatePage from "./contact-create";
+import ContactDetailsPage from "./contact-details";
+import ContactCreatePage from "./contact-create";
 import { getContacts } from "../utils/contacts";
 
 const mockContacts = [
@@ -46,35 +46,27 @@ const mockContacts = [
 ];
 
 
-class App extends React.Component {
+const App = () => {
 
-  constructor(props) {
-    super(props);
+  const [contacts, setContacts] = useState([]);
 
-    this.state = {
-      contacts: []
-    }
-  }
-
-  componentDidMount() {
+  // will only run when cooldown and seconds elapsed states change
+  useEffect(() => {
     const storedContacts = getContacts();
 
-    this.setState({
-      contacts: storedContacts.length ? storedContacts : mockContacts
-    })
-  }
+    setContacts(storedContacts.length ? storedContacts : mockContacts);
+  // eslint-disable-next-line
+  }, []);  
 
-  render() {
     return (
       <div>
-        {/* <LoginPage />
-        <RegisterPage /> */}
-        <ContactsPage contacts={this.state.contacts} />
-        {/* <ContactDetailsPage contact={this.state.contacts[0]} />
-        <ContactCreatePage /> */}
+        {/*<LoginPage /> 
+        <RegisterPage />
+        <ContactsPage contacts={contacts} />
+       <ContactDetailsPage contact={contacts[0]} />
+         <ContactCreatePage /> */}
       </div>
     );
-  }
 }
 
 export default App;

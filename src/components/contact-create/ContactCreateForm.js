@@ -1,101 +1,138 @@
-import React from "react";
+import React, { useState } from "react";
 
-class ContactCreateForm extends React.Component {
-    
-    constructor(props) {
-        super(props);
+let inputStyle = {
+    width: "90%",
+    padding: "12px 12px",
+    margin: "8px 0px",
+    boxSizing: "border-box",
+    border: "none",
+    borderBottom: "1px solid black",
+    fontSize: "18px",
+    color: "black",
+    backgroundColor: "rgba(201, 76, 76, 0)"
+};
 
-        this.state = {
-            firstName: '',
-            lastName: '',
-            phoneNumber: '',
-            email: '',
-            address: '',
-            profilePic: '',
-        };
+let buttonStyle = {
+    backgroundColor: "darkgray",
+    border: "none",
+    padding: "15px 32px",
+    textAlign: "center",
+    textDecoration: "none",
+    display: "inline-block",
+    fontSize: "16px",
+    margin: "4px 2px",
+    cursor: "pointer",
+    boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)"
+};
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+const ContactCreateForm = () => {
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [profilePic, setProfilePic] = useState("");
+
+    const handleInputChange = (e) => {
+        switch (e.target.name) {
+            case "firstName":
+                setFirstName(e.target.value);
+                break;
+            case "lastName":
+                setLastName(e.target.value);
+                break;
+            case "phoneNumber":
+                setPhoneNumber(e.target.value);
+                break;
+            case "email":
+                setEmail(e.target.value);
+                break;
+            case "address":
+                setAddress(e.target.value);
+                break;
+            case "profilePic":
+                setProfilePic(e.target.value);
+                break;
+            default:
+                break;
+        }
     }
 
-    handleInputChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
+    const handleFormSubmit = (e) => e.preventDefault();
 
-    handleFormSubmit(event) {
-        event.preventDefault();
-    }
-
-    render() {
-        return (
-            <form onSubmit={this.handleFormSubmit}>
+    return (
+        <form style={{ display: "flex", justifyContent: "center", }} onSubmit={(e) => handleFormSubmit(e)}>
+            <div>
+                <img style={{ borderRadius: "50%", width: "100px", padding: "20px" }} src={profilePic ? profilePic : "./sample-profile-pic.jpg"} alt="Profile preview." />
+            </div>
+            <div style={{ width: "700px" }}>
                 <div>
-                    <img src={this.state.profilePic} alt="Profile preview." />
+                    <input
+                    style={inputStyle}
+                        type="text"
+                        placeholder="First Name"
+                        name="firstName"
+                        value={firstName}
+                        onChange={(e) => handleInputChange(e)}
+                    />
                 </div>
                 <div>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="First Name"
-                            name="firstName"
-                            value={this.state.firstName}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Last Name"
-                            name="lastName"
-                            value={this.state.lastName}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="tel"
-                            placeholder="Phone Number"
-                            name="phoneNumber"
-                            value={this.state.phoneNumber}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Address"
-                            name="address"
-                            value={this.state.address}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Profile Picture Url"
-                            name="profilePic"
-                            value={this.state.profilePic}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <button type="submit">Add Contact</button>
-                    </div>
+                    <input
+                    style={inputStyle}
+                        type="text"
+                        placeholder="Last Name"
+                        name="lastName"
+                        value={lastName}
+                        onChange={(e) => handleInputChange(e)}
+                    />
                 </div>
-            </form>
-        )
-    }
+                <div>
+                    <input
+                    style={inputStyle}
+                        type="tel"
+                        placeholder="Phone Number"
+                        name="phoneNumber"
+                        value={phoneNumber}
+                        onChange={(e) => handleInputChange(e)}
+                    />
+                </div>
+                <div>
+                    <input
+                    style={inputStyle}
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => handleInputChange(e)}
+                    />
+                </div>
+                <div>
+                    <input
+                    style={inputStyle}
+                        type="text"
+                        placeholder="Address"
+                        name="address"
+                        value={address}
+                        onChange={(e) => handleInputChange(e)}
+                    />
+                </div>
+                <div>
+                    <input
+                    style={inputStyle}
+                        type="text"
+                        placeholder="Profile Picture Url"
+                        name="profilePic"
+                        value={profilePic}
+                        onChange={(e) => handleInputChange(e)}
+                    />
+                </div>
+                <div>
+                    <button style={buttonStyle} type="submit">ADD CONTACT</button>
+                </div>
+            </div>
+        </form>
+    );
 }
 
 export default ContactCreateForm;
