@@ -5,6 +5,8 @@ import ContactsPage from "./contacts";
 import ContactDetailsPage from "./contact-details";
 import ContactCreatePage from "./contact-create";
 import { getContacts } from "../utils/contacts";
+import { ContactContext } from '../context/ContactContext.js';
+import { AuthContext } from '../context/AuthContext.js';
 
 const mockContacts = [
   {
@@ -15,7 +17,7 @@ const mockContacts = [
     "phoneNumber": "351-346-6140",
     "email": "csnelman0@blog.com",
     "address": "09 Eggendart Parkway"
-  }, 
+  },
   {
     "id": 2,
     "firstName": "Tammara",
@@ -24,7 +26,7 @@ const mockContacts = [
     "phoneNumber": "676-783-9239",
     "email": "tallcorn1@senate.gov",
     "address": "78145 Brentwood Court"
-  }, 
+  },
   {
     "id": 3,
     "firstName": "Cassandry",
@@ -33,7 +35,7 @@ const mockContacts = [
     "phoneNumber": "223-879-6692",
     "email": "croze2@w3.org",
     "address": "2079 Morrow Parkway"
-  }, 
+  },
   {
     "id": 4,
     "firstName": "Koressa",
@@ -47,26 +49,63 @@ const mockContacts = [
 
 
 const App = () => {
-
   const [contacts, setContacts] = useState([]);
+  const [user, setUser] = useState(null);
+
+  const dispatchUserEvent = (actionType, payload) => {
+    switch (actionType) {
+      case 'LOGIN':
+        if(payload.user.username === "admin" && payload.user.password === "password"){
+          setUser(payload.user);
+        }
+        return;
+      case 'LOGOUT':
+        setUser(null);
+        return;
+      default:
+        return;
+    }
+  }
+
+  const dispatchContactEvent = (actionType, payload) => {
+    switch (actionType) {
+      case 'ADD_CONTACT':
+        setContacts([...contacts, payload.newContact]);
+        return;
+      case 'REMOVE_CONTACT':
+        setContacts(contacts.filter(contact => contact.id !== payload.contactID));
+        return;
+      default:
+        return;
+    }
+  };
 
   // will only run when cooldown and seconds elapsed states change
   useEffect(() => {
     const storedContacts = getContacts();
 
     setContacts(storedContacts.length ? storedContacts : mockContacts);
-  // eslint-disable-next-line
-  }, []);  
+    // eslint-disable-next-line
+  }, []);
 
-    return (
-      <div>
-        {/*<LoginPage /> 
-        <RegisterPage />
-        <ContactsPage contacts={contacts} />
-       <ContactDetailsPage contact={contacts[0]} />
-         <ContactCreatePage /> */}
-      </div>
-    );
+  return (
+    <div>
+      <AuthContext.Provider value={{ user, dispatchUserEvent }}>
+        <ContactContext.Provider value={{ contacts, dispatchContactEvent }}>
+          {/*
+          <RegisterPage />
+          <ContactDetailsPage contact={contacts[0]} />
+          */}
+          {user ?
+            <>
+              <ContactsPage />
+              <ContactCreatePage />
+            </> :
+            <LoginPage />}
+        </ContactContext.Provider>
+      </AuthContext.Provider>
+    </div>
+  );
 }
 
 export default App;

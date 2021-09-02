@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ContactContext } from '../../context/ContactContext.js';
 
 let inputStyle = {
     width: "90%",
@@ -34,6 +35,22 @@ const ContactCreateForm = () => {
     const [address, setAddress] = useState("");
     const [profilePic, setProfilePic] = useState("");
 
+    const { dispatchContactEvent } = useContext(ContactContext);
+
+    const handleAddContact = () => {
+		const contact = {
+            id: Math.random(),
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            address,
+            profilePic
+        };
+
+		dispatchContactEvent('ADD_CONTACT', { newContact: contact });
+	};
+
     const handleInputChange = (e) => {
         switch (e.target.name) {
             case "firstName":
@@ -59,7 +76,10 @@ const ContactCreateForm = () => {
         }
     }
 
-    const handleFormSubmit = (e) => e.preventDefault();
+    const handleFormSubmit = (e) => {
+        handleAddContact();
+        e.preventDefault();
+    };
 
     return (
         <form style={{ display: "flex", justifyContent: "center", }} onSubmit={(e) => handleFormSubmit(e)}>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext.js';
 
 let formStyle = {
     width: "75vw",
@@ -47,6 +48,17 @@ const LoginForm = () => {
     const [username, setUserName] = useState("");
     const [password, setPassWord] = useState("");
 
+    const { dispatchUserEvent } = useContext(AuthContext);
+
+    const handleUserLogin = () => {
+        const user = {
+            username: username,
+            password: password
+        };
+
+		dispatchUserEvent('LOGIN', { user: user });
+    }
+
     const handleInputChange = (e) => {
         switch (e.target.name) {
             case "username":
@@ -60,7 +72,10 @@ const LoginForm = () => {
         }
     }
 
-    const handleFormSubmit = (e) => e.preventDefault();
+    const handleFormSubmit = (e) => {
+        handleUserLogin();
+        e.preventDefault();
+    };
 
     return (
         <form style={formStyle} onSubmit={(e) => handleFormSubmit(e)}>

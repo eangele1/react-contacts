@@ -1,7 +1,7 @@
 import ContactsList from "./ContactsList";
 
-const ContactsPage = ({ contacts=[] }) => {
-    return <ContactsList contacts={contacts} />
+const ContactsPage = () => {
+    return <ContactsList />
 }
 
 export default ContactsPage;

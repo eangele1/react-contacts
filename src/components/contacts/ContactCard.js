@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { ContactContext } from '../../context/ContactContext.js';
+
 import "./ContactCard.css";
 
 let cardContainer = {
@@ -28,7 +31,13 @@ let buttonStyle = {
     backgroundColor: "darkgray"
 };
 
-const ContactCard = ({ firstName='', lastName='', phoneNumber='', profilePic='' }) => {
+const ContactCard = ({ ID='', firstName='', lastName='', phoneNumber='', profilePic='' }) => {
+
+    const handleRemoveContact = () => {
+		dispatchContactEvent('REMOVE_CONTACT', { contactID: ID });
+	};
+
+    const { dispatchContactEvent } = useContext(ContactContext);
 
     return (
         <div style={cardContainer}>
@@ -43,7 +52,7 @@ const ContactCard = ({ firstName='', lastName='', phoneNumber='', profilePic='' 
                 </div>
             </div>
             <div>
-                <button style={buttonStyle}>✘</button>
+                <button onClick={() => handleRemoveContact()} style={buttonStyle}>✘</button>
             </div>
         </div>
     )
