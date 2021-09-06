@@ -1,8 +1,11 @@
 import React, { useState, useContext } from "react";
 import { ContactContext } from '../../context/ContactContext.js';
+import { createContact } from "../../utils/contacts";
+import samplePic from "../../sample-profile-pic.jpg";
+import { useHistory } from "react-router-dom";
 
 let inputStyle = {
-    width: "90%",
+    width: "100%",
     padding: "12px 12px",
     margin: "8px 0px",
     boxSizing: "border-box",
@@ -36,10 +39,11 @@ const ContactCreateForm = () => {
     const [profilePic, setProfilePic] = useState("");
 
     const { dispatchContactEvent } = useContext(ContactContext);
+    const history = useHistory();
 
     const handleAddContact = () => {
-		const contact = {
-            id: Math.random(),
+
+        const info = {
             firstName,
             lastName,
             phoneNumber,
@@ -48,7 +52,11 @@ const ContactCreateForm = () => {
             profilePic
         };
 
+		const contact = createContact(info);
+
 		dispatchContactEvent('ADD_CONTACT', { newContact: contact });
+
+        history.goBack();
 	};
 
     const handleInputChange = (e) => {
@@ -82,11 +90,11 @@ const ContactCreateForm = () => {
     };
 
     return (
-        <form style={{ display: "flex", justifyContent: "center", }} onSubmit={(e) => handleFormSubmit(e)}>
+        <form style={{ width: "100%", float: "left", display: "flex", justifyContent: "center", }} onSubmit={(e) => handleFormSubmit(e)}>
             <div>
-                <img style={{ borderRadius: "50%", width: "100px", padding: "20px" }} src={profilePic ? profilePic : "./sample-profile-pic.jpg"} alt="Profile preview." />
+                <img style={{ borderRadius: "50%", width: "100px", padding: "15px" }} src={profilePic ? profilePic : samplePic} alt="Profile preview." />
             </div>
-            <div style={{ width: "700px" }}>
+            <div style={{ width: "100%" }}>
                 <div>
                     <input
                     style={inputStyle}

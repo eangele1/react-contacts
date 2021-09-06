@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext.js';
+import { Link } from 'react-router-dom';
 
 let formStyle = {
     width: "75vw",
@@ -105,7 +106,7 @@ const LoginForm = () => {
                 <button style={buttonStyle} type="submit">LOGIN</button>
             </div>
             <div>
-                <p>Don't have an account? <a href="/register">Register</a>.</p>
+                <p>Don't have an account? <Link to="/register">Register</Link>.</p>
             </div>
         </form>
     );

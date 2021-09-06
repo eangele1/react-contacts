@@ -1,16 +1,33 @@
 import ContactCreateForm from "./ContactCreateForm";
+import NavBar from '../NavBar.js';
+import back from "../../back.png";
+import { useHistory } from "react-router-dom";
 
 let contentWrapper = {
-    width: "90vw",
+    width: "75vw",
     maxWidth: "600px",
     margin: "auto"
 };
 
 const ContactCreatePage = () => {
+
+    const history = useHistory();
+
     return (
-        <div style={contentWrapper}>
-            <ContactCreateForm />
-        </div>
+        <>
+            <NavBar>
+                <img
+                    style={{ cursor: "pointer", position: "absolute", left: "15px", top: "20px" }}
+                    src={back}
+                    alt="logout"
+                    width="35rem"
+                    onClick={() => history.goBack()}
+                />
+            </NavBar>
+            <div style={contentWrapper}>
+                <ContactCreateForm />
+            </div>
+        </>
     )
 }
 

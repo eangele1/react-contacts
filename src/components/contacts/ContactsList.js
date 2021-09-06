@@ -5,7 +5,8 @@ import { ContactContext } from '../../context/ContactContext.js';
 let listWrapper = {
     textAlign: "center",
     margin: "auto",
-    width: "450px",
+    maxWidth: "600px",
+    width: "75vw",
     backgroundColor: "darkgray"
 };
 
@@ -15,13 +16,13 @@ const ContactList = () => {
 
     return (
         <div style={listWrapper}>
-            {contacts.map((contact) => 
-                <ContactCard 
+            {contacts.map((contact) =>
+                <ContactCard
                     key={contact.id}
                     ID={contact.id}
-                    firstName={contact.firstName} 
-                    lastName={contact.lastName} 
-                    phoneNumber={contact.phoneNumber} 
+                    firstName={contact.firstName}
+                    lastName={contact.lastName}
+                    phoneNumber={contact.phoneNumber}
                     profilePic={contact.profilePic}
                 />
             )}

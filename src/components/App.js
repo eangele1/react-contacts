@@ -4,9 +4,16 @@ import RegisterPage from "./register";
 import ContactsPage from "./contacts";
 import ContactDetailsPage from "./contact-details";
 import ContactCreatePage from "./contact-create";
+
 import { getContacts } from "../utils/contacts";
+import { login } from "../utils/auth";
+
 import { ContactContext } from '../context/ContactContext.js';
 import { AuthContext } from '../context/AuthContext.js';
+
+import { BrowserRouter, Switch } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute.js';
+import PublicRoute from './PublicRoute.js';
 
 const mockContacts = [
   {
@@ -47,7 +54,6 @@ const mockContacts = [
   }
 ];
 
-
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [user, setUser] = useState(null);
@@ -55,7 +61,7 @@ const App = () => {
   const dispatchUserEvent = (actionType, payload) => {
     switch (actionType) {
       case 'LOGIN':
-        if(payload.user.username === "admin" && payload.user.password === "password"){
+        if (login(payload.user.username, payload.user.password)) {
           setUser(payload.user);
         }
         return;
@@ -80,7 +86,7 @@ const App = () => {
     }
   };
 
-  // will only run when cooldown and seconds elapsed states change
+  // will only run once
   useEffect(() => {
     const storedContacts = getContacts();
 
@@ -92,16 +98,15 @@ const App = () => {
     <div>
       <AuthContext.Provider value={{ user, dispatchUserEvent }}>
         <ContactContext.Provider value={{ contacts, dispatchContactEvent }}>
-          {/*
-          <RegisterPage />
-          <ContactDetailsPage contact={contacts[0]} />
-          */}
-          {user ?
-            <>
-              <ContactsPage />
-              <ContactCreatePage />
-            </> :
-            <LoginPage />}
+          <BrowserRouter>
+            <Switch>
+              <PublicRoute restricted={true} component={LoginPage} path="/login" exact />
+              <PublicRoute restricted={true} component={RegisterPage} path="/register" exact />
+              <PrivateRoute component={ContactsPage} path="/" exact />
+              <PrivateRoute component={ContactCreatePage} path="/contacts/add" />
+              <PrivateRoute component={ContactDetailsPage} path="/contacts/:index" />
+            </Switch>
+          </BrowserRouter>
         </ContactContext.Provider>
       </AuthContext.Provider>
     </div>

@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { createUser } from "../../utils/auth";
 
 let formStyle = {
     width: "75vw",
@@ -19,6 +21,7 @@ let formStyle = {
 
 let buttonStyle = {
     backgroundColor: "darkgray",
+    color: "black",
     border: "none",
     padding: "15px 32px",
     textAlign: "center",
@@ -28,6 +31,12 @@ let buttonStyle = {
     margin: "4px 2px",
     cursor: "pointer",
     boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)"
+};
+
+let disabledButtonStyle = {
+    ...buttonStyle,
+    color: "white",
+    cursor: "auto"
 };
 
 let inputStyle = {
@@ -46,6 +55,7 @@ const RegisterForm = () => {
 
     const [username, setUserName] = useState("");
     const [password, setPassWord] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
 
     const handleInputChange = (e) => {
         switch (e.target.name) {
@@ -55,12 +65,19 @@ const RegisterForm = () => {
             case "password":
                 setPassWord(e.target.value);
                 break;
+            case "confirmPass":
+                setConfirmPass(e.target.value);
+                break;
             default:
                 break;
         }
     }
 
-    const handleFormSubmit = (e) => e.preventDefault();
+    const handleFormSubmit = (e) => {
+        console.log("Hi");
+        createUser(username, password);
+        e.preventDefault();
+    };
 
     return (
         <form style={formStyle} onSubmit={(e) => handleFormSubmit(e)}>
@@ -87,10 +104,27 @@ const RegisterForm = () => {
                 />
             </div>
             <div>
-                <button style={buttonStyle} type="submit">REGISTER</button>
+                <input
+                    style={inputStyle}
+                    id="confirmPass"
+                    name="confirmPass"
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPass}
+                    onChange={(e) => handleInputChange(e)}
+                />
             </div>
             <div>
-                <p>Already have an account? <a href="/login">Login</a>.</p>
+                <button
+                    disabled={!(username !== "" && confirmPass === password)}
+                    style={((username !== "" && confirmPass === password) ? buttonStyle : disabledButtonStyle)}
+                    type="submit"
+                >
+                    REGISTER
+                </button>
+            </div>
+            <div>
+                <p>Already have an account? <Link to="/login">Login</Link>.</p>
             </div>
         </form>
     );
